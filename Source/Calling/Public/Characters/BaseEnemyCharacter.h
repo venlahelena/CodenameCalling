@@ -13,5 +13,9 @@ UCLASS()
 class CALLING_API ABaseEnemyCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
+
+public:
+
+	ABaseEnemyCharacter();
 	
 };

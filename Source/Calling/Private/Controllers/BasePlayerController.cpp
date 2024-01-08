@@ -113,9 +113,6 @@ void ABasePlayerController::PlayerCameraTrace()
 
         }
 
-        // Debug: Draw a debug line to visualize the trace
-        DrawDebugLine(GetWorld(), CameraLocation, HitResult.ImpactPoint, FColor::Green, false, 1.0f, 0, 1.0f);
-
         UE_LOG(LogTemp, Warning, TEXT("Successful hit! Actor: %s"), *HitResult.GetActor()->GetName());
     }
 }

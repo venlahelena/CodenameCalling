@@ -4,6 +4,11 @@
 #include "Characters/BaseCharacter.h"
 #include "Components/SkeletalMeshComponent.h"
 
+void ABaseCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -15,8 +20,7 @@ ABaseCharacter::ABaseCharacter()
 
 }
 
-void ABaseCharacter::BeginPlay()
+UAbilitySystemComponent* ABaseCharacter::GetAbilitySystemComponent() const
 {
-	Super::BeginPlay();
-	
+	return AbilitySystemComponent;
 }

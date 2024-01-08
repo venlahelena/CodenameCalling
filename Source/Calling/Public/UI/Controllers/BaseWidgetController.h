@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "AbilitySystemComponent.h"
+#include "AttributeSet.h"
 #include "BaseWidgetController.generated.h"
 
 
-//class UAttributeSet;
-//class UAbilitySystemComponent;
-
+class UAttributeSet;
+class UAbilitySystemComponent;
 
 UCLASS()
 class CALLING_API UBaseWidgetController : public UObject
@@ -24,10 +25,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
 	TObjectPtr<APlayerState> PlayerState;
 
-	//UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
-	//TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
-	//UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
-	//TObjectPtr<UAttributeSet> AttributeSet;
+	UPROPERTY(BlueprintReadOnly, Category = "WidgetController")
+	TObjectPtr<UAttributeSet> AttributeSet;
 	
 };
