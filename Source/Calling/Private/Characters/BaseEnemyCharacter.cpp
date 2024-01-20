@@ -12,3 +12,9 @@ ABaseEnemyCharacter::ABaseEnemyCharacter()
 
 	AttributeSet = CreateDefaultSubobject<UBaseAttributeSet>("AttributeSet");
 }
+
+void ABaseEnemyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+}

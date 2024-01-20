@@ -9,6 +9,7 @@
 class UInputMappingContext;
 class UInputAction;
 class IInteractionInterface;
+class AInspectableItem;
 
 UCLASS()
 class CALLING_API ABasePlayerController : public APlayerController
@@ -20,6 +21,12 @@ public:
 	ABasePlayerController();
 
 	virtual void PlayerTick(float DeltaTime) override;
+
+	UFUNCTION(BlueprintCallable)
+	void ZoomIn();
+
+	UFUNCTION(BlueprintCallable)
+	void ZoomOut();
 
 protected:
 
@@ -45,9 +52,12 @@ private:
 	void Look(const FInputActionValue& InputActionValue);
 
 	void PlayerCameraTrace();
+
 	IInteractionInterface* LastActor;
 	IInteractionInterface* ThisActor;
 
+	float OriginalCameraArmLength;
 
-	
+	TObjectPtr<AInspectableItem> InspectableItem;
+
 };

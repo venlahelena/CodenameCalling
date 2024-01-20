@@ -17,5 +17,9 @@ class CALLING_API ABaseEnemyCharacter : public ABaseCharacter
 public:
 
 	ABaseEnemyCharacter();
+
+protected:
+
+	virtual void BeginPlay() override;
 	
 };

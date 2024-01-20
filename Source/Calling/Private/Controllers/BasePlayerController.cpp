@@ -7,9 +7,15 @@
 #include "Interface/InteractionInterface.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Items/InspectableItem.h"
 
 ABasePlayerController::ABasePlayerController()
 {
+    OriginalCameraArmLength = 200.0f;
+    InspectableItem = nullptr;
 }
 
 void ABasePlayerController::BeginPlay()
@@ -19,8 +25,10 @@ void ABasePlayerController::BeginPlay()
     check(PlayerContext);
 
     UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-    check(SubSystem);
-    SubSystem->AddMappingContext(PlayerContext, 0);
+    if (SubSystem)
+    {
+        SubSystem->AddMappingContext(PlayerContext, 0);
+    }
 }
 
 void ABasePlayerController::PlayerTick(float DeltaTime)
@@ -67,6 +75,43 @@ void ABasePlayerController::Look(const FInputActionValue& InputActionValue)
 	}
 }
 
+void ABasePlayerController::ZoomIn()
+{
+    APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+    if (CameraManager)
+    {
+        ACharacter* ControlledCharacter = GetCharacter();
+        if (ControlledCharacter)
+        {
+            USpringArmComponent* SpringArm = ControlledCharacter->FindComponentByClass<USpringArmComponent>();
+
+            if (SpringArm)
+            {
+                OriginalCameraArmLength = SpringArm->TargetArmLength;
+                SpringArm->TargetArmLength = OriginalCameraArmLength * 0.5f; // Adjust the zoom factor as needed
+            }
+        }
+    }
+}
+
+void ABasePlayerController::ZoomOut()
+{
+    APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
+    if (CameraManager)
+    {
+        ACharacter* ControlledCharacter = GetCharacter();
+        if (ControlledCharacter)
+        {
+            USpringArmComponent* SpringArm = ControlledCharacter->FindComponentByClass<USpringArmComponent>();
+
+            if (SpringArm)
+            {
+                SpringArm->TargetArmLength = OriginalCameraArmLength;
+            }
+        }
+    }
+}
+
 void ABasePlayerController::PlayerCameraTrace()
 {
     // Get the location and rotation of the player's camera
@@ -111,6 +156,11 @@ void ABasePlayerController::PlayerCameraTrace()
                 }
             }
 
+        }
+
+        if (InspectableItem)
+        {
+            ZoomIn();
         }
 
         UE_LOG(LogTemp, Warning, TEXT("Successful hit! Actor: %s"), *HitResult.GetActor()->GetName());
