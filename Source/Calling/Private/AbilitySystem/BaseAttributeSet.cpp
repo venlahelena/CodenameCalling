@@ -5,8 +5,8 @@
 
 UBaseAttributeSet::UBaseAttributeSet()
 {
-	InitHealth(100.f);
-	InitMaxHealth(100.f);
-	InitPower(50.f);
-	InitMaxPower(50.f);
+	InitHealth(60.0f);
+	InitMaxHealth(100.0f);
+	InitPower(30.0f);
+	InitMaxPower(50.0f);
 }
