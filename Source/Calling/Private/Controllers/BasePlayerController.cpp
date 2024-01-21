@@ -45,6 +45,7 @@ void ABasePlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
     EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Look);
+    EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Interact);
 }
 
 void ABasePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -153,16 +154,23 @@ void ABasePlayerController::PlayerCameraTrace()
                 {
                     LastActor->UnHighlightActor();
                     ThisActor->HighlightActor();
+                    
                 }
             }
 
         }
+    }
 
-        if (InspectableItem)
-        {
-            ZoomIn();
-        }
+}
 
-        UE_LOG(LogTemp, Warning, TEXT("Successful hit! Actor: %s"), *HitResult.GetActor()->GetName());
+void ABasePlayerController::Interact()
+{
+    if (ThisActor)
+    {
+        ThisActor->Interact();
+    }
+    else
+    {
+        ThisActor = nullptr;
     }
 }

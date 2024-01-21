@@ -31,3 +31,44 @@ void ABaseItem::UnHighlightActor()
 {
 	ItemMeshComponent->SetRenderCustomDepth(false);
 }
+
+void ABaseItem::Interact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Interact function called!"));
+
+    switch (ItemType)
+    {
+    case EItemType::PuzzleItem:
+        HandlePuzzleInteraction();
+        break;
+
+    case EItemType::ReadableText:
+        HandleReadableTextInteraction();
+        break;
+
+    case EItemType::InventoryItem:
+        HandleInventoryItemInteraction();
+        break;
+    default:
+        UE_LOG(LogTemp, Error, TEXT("Unhandled item type in Interact function!"));
+        break;
+    }
+}
+
+void ABaseItem::HandlePuzzleInteraction()
+{
+    // Add specific logic for puzzle item interactions here
+    UE_LOG(LogTemp, Warning, TEXT("Puzzle item interaction logic goes here!"));
+}
+
+void ABaseItem::HandleReadableTextInteraction()
+{
+    // Add specific logic for readable text interactions here
+    UE_LOG(LogTemp, Warning, TEXT("Readable text interaction logic goes here!"));
+}
+
+void ABaseItem::HandleInventoryItemInteraction()
+{
+    // Add specific logic for inventory item interactions here
+    UE_LOG(LogTemp, Warning, TEXT("Inventory item interaction logic goes here!"));
+}

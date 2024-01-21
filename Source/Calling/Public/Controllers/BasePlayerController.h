@@ -11,6 +11,9 @@ class UInputAction;
 class IInteractionInterface;
 class AInspectableItem;
 
+struct FInputActionValue;
+
+
 UCLASS()
 class CALLING_API ABasePlayerController : public APlayerController
 {
@@ -48,8 +51,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> LookAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> InteractAction;
+
 	void Move(const struct FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
+
+	void Interact();
 
 	void PlayerCameraTrace();
 
