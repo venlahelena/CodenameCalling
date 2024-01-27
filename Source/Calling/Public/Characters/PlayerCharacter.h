@@ -24,9 +24,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> CameraComponent;
 
+	TObjectPtr<UCameraComponent> OriginalCamera;
+
 	virtual void PossessedBy(AController* NewController) override;
 
+	void SwitchToOriginalCamera();
+
 private:
+
 	void InitAbilityActorInfo();
+
+protected:
+
 
 };

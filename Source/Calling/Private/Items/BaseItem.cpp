@@ -12,6 +12,8 @@ ABaseItem::ABaseItem()
 	ItemMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMesh"));
 	RootComponent = ItemMeshComponent;
 
+    
+
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +61,11 @@ void ABaseItem::HandlePuzzleInteraction()
 {
     // Add specific logic for puzzle item interactions here
     UE_LOG(LogTemp, Warning, TEXT("Puzzle item interaction logic goes here!"));
+}
+
+void ABaseItem::StopInspect()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Puzzle item stop  interaction logic goes here!"));
 }
 
 void ABaseItem::HandleReadableTextInteraction()

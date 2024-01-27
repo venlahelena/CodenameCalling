@@ -12,6 +12,7 @@ class UStaticMeshComponent;
 UENUM(BlueprintType)
 enum class EItemType : uint8
 {
+	Default,
 	PuzzleItem,
 	ReadableText,
 	InventoryItem,
@@ -31,6 +32,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	bool bIsInspecting = false;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Mesh")
 	TObjectPtr<UStaticMeshComponent> ItemMeshComponent;
 
@@ -39,6 +42,7 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 	virtual void Interact() override;
+	virtual void StopInspect() override;
 
 	virtual void HandlePuzzleInteraction();
 	virtual void HandleReadableTextInteraction();

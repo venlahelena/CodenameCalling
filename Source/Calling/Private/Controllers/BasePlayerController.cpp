@@ -46,6 +46,7 @@ void ABasePlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
     EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Look);
     EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Interact);
+    EnhancedInputComponent->BindAction(StopInspectAction, ETriggerEvent::Triggered, this, &ABasePlayerController::StopItemInspecting);
 }
 
 void ABasePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -74,43 +75,6 @@ void ABasePlayerController::Look(const FInputActionValue& InputActionValue)
 		ControlledPawn->AddControllerYawInput(LookAxisVector.X);
 		ControlledPawn->AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ABasePlayerController::ZoomIn()
-{
-    APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-    if (CameraManager)
-    {
-        ACharacter* ControlledCharacter = GetCharacter();
-        if (ControlledCharacter)
-        {
-            USpringArmComponent* SpringArm = ControlledCharacter->FindComponentByClass<USpringArmComponent>();
-
-            if (SpringArm)
-            {
-                OriginalCameraArmLength = SpringArm->TargetArmLength;
-                SpringArm->TargetArmLength = OriginalCameraArmLength * 0.5f; // Adjust the zoom factor as needed
-            }
-        }
-    }
-}
-
-void ABasePlayerController::ZoomOut()
-{
-    APlayerCameraManager* CameraManager = UGameplayStatics::GetPlayerCameraManager(this, 0);
-    if (CameraManager)
-    {
-        ACharacter* ControlledCharacter = GetCharacter();
-        if (ControlledCharacter)
-        {
-            USpringArmComponent* SpringArm = ControlledCharacter->FindComponentByClass<USpringArmComponent>();
-
-            if (SpringArm)
-            {
-                SpringArm->TargetArmLength = OriginalCameraArmLength;
-            }
-        }
-    }
 }
 
 void ABasePlayerController::PlayerCameraTrace()
@@ -172,5 +136,17 @@ void ABasePlayerController::Interact()
     else
     {
         ThisActor = nullptr;
+    }
+}
+
+void ABasePlayerController::StopItemInspecting()
+{
+    if (ThisActor)
+    {
+        ThisActor->StopInspect();
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("ThisActor is null in StopItemInspecting"));
     }
 }

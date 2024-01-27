@@ -25,12 +25,6 @@ public:
 
 	virtual void PlayerTick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void ZoomIn();
-
-	UFUNCTION(BlueprintCallable)
-	void ZoomOut();
-
 protected:
 
 	virtual void BeginPlay() override;
@@ -54,10 +48,14 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> InteractAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> StopInspectAction;
+
 	void Move(const struct FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 
 	void Interact();
+	void StopItemInspecting();
 
 	void PlayerCameraTrace();
 
@@ -67,5 +65,4 @@ private:
 	float OriginalCameraArmLength;
 
 	TObjectPtr<AInspectableItem> InspectableItem;
-
 };

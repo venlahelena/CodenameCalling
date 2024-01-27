@@ -26,4 +26,5 @@ public:
 	virtual void HighlightActor() = 0;
 	virtual void UnHighlightActor() = 0;
 	virtual void Interact() = 0;
+	virtual void StopInspect() = 0;
 };

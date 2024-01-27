@@ -26,6 +26,8 @@ APlayerCharacter::APlayerCharacter()
     CameraComponent->SetupAttachment(SpringArmComponent);
     CameraComponent->SetRelativeLocation(FVector(100.0f, 20.0f, 55.0f));
     CameraComponent->bUsePawnControlRotation = true;
+
+    OriginalCamera = CameraComponent;
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)
@@ -50,5 +52,28 @@ void APlayerCharacter::InitAbilityActorInfo()
         {
             BaseHUD->InitOverlay(BasePlayerController, BasePlayerState, AbilitySystemComponent, AttributeSet);
         }
+    }
+}
+
+void APlayerCharacter::SwitchToOriginalCamera()
+{
+    if (OriginalCamera)
+    {
+        ABasePlayerController* PlayerController = Cast<ABasePlayerController>(GetController());
+        if (PlayerController)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Switching back to original camera"));
+
+            PlayerController->SetViewTargetWithBlend(this, 0.5f, EViewTargetBlendFunction::VTBlend_Cubic);
+            PlayerController->SetShowMouseCursor(false);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("PlayerController is nullptr during camera switch"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("OriginalCamera is nullptr during camera switch"));
     }
 }

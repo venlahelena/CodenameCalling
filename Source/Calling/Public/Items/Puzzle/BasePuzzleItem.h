@@ -18,6 +18,7 @@ public:
 	ABasePuzzleItem();
 
 	virtual void HandlePuzzleInteraction() override;
+    virtual void StopInspect() override;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Puzzle Camera")
     FVector PuzzleCameraSpawnLocationOffset;
@@ -35,8 +36,8 @@ protected:
 
     void SpawnPuzzleCameraActor();
 
-    void DestroyPuzzleCameraActor();
+    void ReturnToOriginalCamera();
 
-    void TogglePlayerInput(bool bEnableInput);
+    void DestroyPuzzleCameraActor();
 
 };
