@@ -5,9 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interface/InteractionInterface.h"
+#include "Structures/ItemStruct.h"
 #include "BaseItem.generated.h"
 
 class UStaticMeshComponent;
+
+struct FItemData;
 
 UENUM(BlueprintType)
 enum class EItemType : uint8
@@ -26,8 +29,13 @@ class CALLING_API ABaseItem : public AActor, public IInteractionInterface
 public:	
 	ABaseItem();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Item")
+	FItemData ItemData;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Item")
 	EItemType ItemType;
+
+	FItemData GeItemData() const { return ItemData; };
 
 protected:
 	virtual void BeginPlay() override;
