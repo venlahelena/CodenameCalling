@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -9,6 +8,7 @@
 #include "BaseItem.generated.h"
 
 class UStaticMeshComponent;
+class APlayerCharacter;
 
 struct FItemData;
 
@@ -19,6 +19,7 @@ enum class EItemType : uint8
 	PuzzleItem,
 	ReadableText,
 	InventoryItem,
+	WeaponItem,
 };
 
 UCLASS()
@@ -49,11 +50,14 @@ public:
 
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
+
 	virtual void Interact() override;
-	virtual void StopInspect() override;
 
 	virtual void HandlePuzzleInteraction();
 	virtual void HandleReadableTextInteraction();
 	virtual void HandleInventoryItemInteraction();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void NotifyCollectedForQuest();
 
 };

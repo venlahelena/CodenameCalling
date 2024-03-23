@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 
 #include "Characters/PlayerCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -7,6 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "UI/HUD/BaseHUD.h"
 #include "Controllers/BasePlayerController.h"
+#include "Inventory/InventoryActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -28,6 +27,8 @@ APlayerCharacter::APlayerCharacter()
     CameraComponent->bUsePawnControlRotation = true;
 
     OriginalCamera = CameraComponent;
+
+    InventoryComponent = CreateDefaultSubobject<UInventoryActorComponent>(TEXT("InventoryComponent"));
 }
 
 void APlayerCharacter::PossessedBy(AController* NewController)

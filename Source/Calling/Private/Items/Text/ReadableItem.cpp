@@ -11,6 +11,14 @@ void AReadableItem::HandleReadableTextInteraction()
 {
     Super::HandleReadableTextInteraction();
 
+    if (WidgetInstance && WidgetInstance->IsVisible())
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Closing readable item widget"));
+        WidgetInstance->RemoveFromParent();
+        WidgetInstance = nullptr;
+        return;
+    }
+
     UE_LOG(LogTemp, Warning, TEXT("Interacted in the readable chilld!"));
     if (WidgetClass)
     {
@@ -19,6 +27,7 @@ void AReadableItem::HandleReadableTextInteraction()
         if (WidgetInstance)
         {
             WidgetInstance->AddToViewport();
+            NotifyCollectedForQuest();
         }
     }
 }

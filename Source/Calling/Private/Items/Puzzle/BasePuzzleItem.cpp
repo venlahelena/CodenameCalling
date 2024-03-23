@@ -17,14 +17,7 @@ void ABasePuzzleItem::HandlePuzzleInteraction()
     // Add code for camera zooming, rotation, etc.
   
     SpawnPuzzleCameraActor();
-
-}
-
-void ABasePuzzleItem::StopInspect()
-{
-    Super::StopInspect();
-
-    ReturnToOriginalCamera();
+    NotifyCollectedForQuest();
 }
 
 void ABasePuzzleItem::SpawnPuzzleCameraActor()
@@ -65,6 +58,7 @@ void ABasePuzzleItem::ReturnToOriginalCamera()
         UE_LOG(LogTemp, Warning, TEXT("bIsInspecting after setting to true: %s"), bIsInspecting ? TEXT("True") : TEXT("False"));
 
         APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
         if (PlayerCharacter)
         {
             // Switch back to the original camera

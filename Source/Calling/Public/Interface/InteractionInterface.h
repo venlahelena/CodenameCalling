@@ -23,8 +23,8 @@ class CALLING_API IInteractionInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
+	virtual void Interact() = 0;
+
 	virtual void HighlightActor() = 0;
 	virtual void UnHighlightActor() = 0;
-	virtual void Interact() = 0;
-	virtual void StopInspect() = 0;
 };

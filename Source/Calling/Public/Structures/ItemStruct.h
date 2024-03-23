@@ -2,6 +2,16 @@
 
 #include "ItemStruct.generated.h"
 
+UENUM(BlueprintType)
+enum class EItemCategory : uint8
+{
+	Default,
+	Consumable,
+	Puzzle,
+	Weapon,
+};
+
+
 USTRUCT(BlueprintType)
 struct FItemData
 {
@@ -24,4 +34,10 @@ struct FItemData
 
 	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Item")
 	int32 ItemID;
+
+	UPROPERTY(EditdefaultsOnly, BlueprintReadOnly, Category = "Item")
+	EItemCategory ItemCategory;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Item")
+	int32 RestorationAmount;
 };

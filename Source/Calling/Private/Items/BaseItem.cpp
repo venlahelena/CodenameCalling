@@ -2,6 +2,7 @@
 
 
 #include "Items/BaseItem.h"
+#include "Characters/PlayerCharacter.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -38,6 +39,8 @@ void ABaseItem::Interact()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Interact function called!"));
 
+    NotifyCollectedForQuest();
+
     switch (ItemType)
     {
     case EItemType::PuzzleItem:
@@ -63,11 +66,6 @@ void ABaseItem::HandlePuzzleInteraction()
     UE_LOG(LogTemp, Warning, TEXT("Puzzle item interaction logic goes here!"));
 }
 
-void ABaseItem::StopInspect()
-{
-    UE_LOG(LogTemp, Warning, TEXT("Puzzle item stop  interaction logic goes here!"));
-}
-
 void ABaseItem::HandleReadableTextInteraction()
 {
     // Add specific logic for readable text interactions here
@@ -78,4 +76,5 @@ void ABaseItem::HandleInventoryItemInteraction()
 {
     // Add specific logic for inventory item interactions here
     UE_LOG(LogTemp, Warning, TEXT("Inventory item interaction logic goes here!"));
+    
 }

@@ -34,6 +34,13 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Trace")
 	float TraceDistance = 1000.0f;
 
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> InventoryWidgetClass;
+
+	TObjectPtr<UUserWidget> InventoryWidgetInstance;
+
+	bool IsInventoryOpen() const;
+
 private:
 
 	UPROPERTY(EditAnywhere, Category="Input")
@@ -51,13 +58,21 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> StopInspectAction;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> ToggleInventoryAction;
+
 	void Move(const struct FInputActionValue& InputActionValue);
 	void Look(const FInputActionValue& InputActionValue);
 
 	void Interact();
-	void StopItemInspecting();
 
 	void PlayerCameraTrace();
+
+	void ToggleInventory();
+
+	void CloseInventory();
+
+	void OpenInventory();
 
 	IInteractionInterface* LastActor;
 	IInteractionInterface* ThisActor;

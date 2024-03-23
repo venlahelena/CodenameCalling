@@ -19,6 +19,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* InWidgetController);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnItemsAdded(const TMap<FString, FItemData>& Inventory);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void ShowAllItemsInInventory(const TMap<FString, FItemData>& InventoryData);
+
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;
 

@@ -8,6 +8,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UInventoryActorComponent;
+class ABasePlayerController;
 
 UCLASS()
 class CALLING_API APlayerCharacter : public ABaseCharacter
@@ -25,6 +27,9 @@ public:
 	TObjectPtr<UCameraComponent> CameraComponent;
 
 	TObjectPtr<UCameraComponent> OriginalCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	TObjectPtr<UInventoryActorComponent> InventoryComponent;
 
 	virtual void PossessedBy(AController* NewController) override;
 

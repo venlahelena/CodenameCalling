@@ -4,10 +4,13 @@
 #include "Controllers/BasePlayerController.h"
 #include "InputMappingContext.h"
 #include "DrawDebugHelpers.h"
+#include "Characters/PlayerCharacter.h"
 #include "Interface/InteractionInterface.h"
+#include "Inventory/InventoryActorComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "UI/Widgets/BaseWidget.h"
 #include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Items/InspectableItem.h"
@@ -43,12 +46,14 @@ void ABasePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Move);
     EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Look);
-    EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ABasePlayerController::Interact);
-    EnhancedInputComponent->BindAction(StopInspectAction, ETriggerEvent::Triggered, this, &ABasePlayerController::StopItemInspecting);
-}
 
+    EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Completed, this, &ABasePlayerController::Interact);
+
+    EnhancedInputComponent->BindAction(ToggleInventoryAction, ETriggerEvent::Completed, this, &ABasePlayerController::ToggleInventory);
+}
 void ABasePlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	FVector2D MovementVector = InputActionValue.Get<FVector2D>();
@@ -91,7 +96,13 @@ void ABasePlayerController::PlayerCameraTrace()
     FCollisionQueryParams CollisionParams;
     CollisionParams.AddIgnoredActor(GetPawn());
 
+    if (GetWorld() && GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, TraceEnd, ECC_Visibility, CollisionParams))
+    {
+        DrawDebugLine(GetWorld(), CameraLocation, TraceEnd, FColor::Green, false, 0.1f, 0, 1.0f);
+    }
+
     bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, CameraLocation, TraceEnd, ECC_Visibility, CollisionParams);
+
 
     if (bHit)
     {
@@ -139,14 +150,82 @@ void ABasePlayerController::Interact()
     }
 }
 
-void ABasePlayerController::StopItemInspecting()
+bool ABasePlayerController::IsInventoryOpen() const
 {
-    if (ThisActor)
+    return (InventoryWidgetInstance && InventoryWidgetInstance->IsVisible());
+}
+
+void ABasePlayerController::CloseInventory()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Closing inventory"));
+
+    InventoryWidgetInstance->RemoveFromParent();
+    InventoryWidgetInstance = nullptr;
+
+    SetShowMouseCursor(false);
+    SetIgnoreMoveInput(false);
+    SetIgnoreLookInput(false);
+
+    FInputModeGameOnly InputMode;
+    SetInputMode(InputMode);
+}
+
+void ABasePlayerController::OpenInventory()
+{
+    APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(GetPawn());
+
+    if (!PlayerCharacter || !PlayerCharacter->InventoryComponent)
     {
-        ThisActor->StopInspect();
+        UE_LOG(LogTemp, Error, TEXT("Player Character or Inventory Component is not valid"));
+        return;
+    }
+
+    TMap<FString, FItemData> InventoryData;
+    PlayerCharacter->InventoryComponent->GetInventoryData(InventoryData);
+
+    if (InventoryWidgetClass)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Creating and adding inventory widget"));
+
+        InventoryWidgetInstance = CreateWidget<UUserWidget>(this, InventoryWidgetClass);
+        if (!InventoryWidgetInstance)
+        {
+            UE_LOG(LogTemp, Error, TEXT("Failed to create Inventory Widget"));
+            return;
+        }
+
+        SetShowMouseCursor(true);
+        SetIgnoreMoveInput(true);
+        SetIgnoreLookInput(true);
+
+        FInputModeGameAndUI InputMode;
+        InputMode.SetWidgetToFocus(InventoryWidgetInstance->TakeWidget());
+        SetInputMode(InputMode);
+
+        UBaseWidget* BaseWidget = Cast<UBaseWidget>(InventoryWidgetInstance);
+        if (BaseWidget)
+        {
+            BaseWidget->OnItemsAdded(InventoryData);
+        }
+
+        InventoryWidgetInstance->AddToViewport();
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("ThisActor is null in StopItemInspecting"));
+        UE_LOG(LogTemp, Error, TEXT("Inventory Widget Class is not set"));
     }
 }
+
+void ABasePlayerController::ToggleInventory()
+{
+    if (IsInventoryOpen())
+    {
+        CloseInventory();
+    }
+    else
+    {
+        OpenInventory();
+    }
+}
+
+
